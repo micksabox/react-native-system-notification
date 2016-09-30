@@ -281,7 +281,13 @@ public class Notification {
         PendingIntent pendingIntent = getScheduleNotificationIntent();
 
         if (attributes.repeatType == null) {
+          if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            getAlarmManager().setExact(AlarmManager.RTC_WAKEUP, attributes.sendAt, pendingIntent);
+          }
+          else{
             getAlarmManager().set(AlarmManager.RTC_WAKEUP, attributes.sendAt, pendingIntent);
+          }
+
             Log.i("ReactSystemNotification", "Set One-Time Alarm: " + id);
 
         } else {
@@ -315,7 +321,12 @@ public class Notification {
                     break;
 
                 default:
-                    getAlarmManager().set(AlarmManager.RTC_WAKEUP, attributes.sendAt, pendingIntent);
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+                      getAlarmManager().setExact(AlarmManager.RTC_WAKEUP, attributes.sendAt, pendingIntent);
+                    }
+                    else{
+                      getAlarmManager().set(AlarmManager.RTC_WAKEUP, attributes.sendAt, pendingIntent);
+                    }                    
                     Log.i("ReactSystemNotification", "Set One-Time Alarm: " + id);
                     break;
             }
